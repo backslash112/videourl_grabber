@@ -32,30 +32,28 @@ driver.get('https://m.xinli001.com/lesson/playView?play_id=442&id=67')
 
 def save(tup):
     save_file("/Users/cunyang/Downloads/video.txt", tup)
-    
+
 def save_file(file_name, tup):
     with open(file_name, 'a+') as f:
-            # separate each field with tab for Anki
             f.write("{0}; {1}\n".format(tup[0], tup[1]))
 
 def get_video():
-    
+
     title = ""
     url = ""
     if driver.find_element_by_xpath("//div[@class='video-small-title']"):
         title = driver.find_element_by_xpath("//div[@class='video-small-title']").text
-        
+
     print(title)
     time.sleep(0.5)
     video_html = driver.find_element_by_id('video-player-container').get_attribute('innerHTML')
-#    print(str(video_html))
     if re.findall('https://.+mp\w', str(video_html)):
         url = re.findall('https://.+mp\w', str(video_html))[0]
         print(url)
-    
+
     if title and url:
         save((title, url))
-        
+
     time.sleep(0.5)
     if driver.find_elements_by_xpath("//div[@class='class-link-title']"):
         driver.find_elements_by_xpath("//div[@class='class-link-title']")[-1].click()
